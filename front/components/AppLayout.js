@@ -5,15 +5,15 @@ import { Menu, Input, Row, Col } from 'antd';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import UserProfile from '../components/UserProfile';
-import LoginForm from '../components/LoginForm';
+import UserProfile from './UserProfile';
+import LoginForm from './LoginForm';
 
 const SearchInput = styled(Input.Search)`
   vertical-align : middle;
 `;
 
 const AppLayout = ({ children }) => {
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
 
   return (
     <div>
@@ -32,23 +32,23 @@ const AppLayout = ({ children }) => {
         </Menu.Item>
       </Menu>
       <Row gutter={8}>
-        <Col xs={24} md={6} >
-          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+        <Col xs={24} md={6}>
+          {me ? <UserProfile /> : <LoginForm />}
         </Col>
-        <Col xs={24} md={12} >
-        {children}
+        <Col xs={24} md={12}>
+          {children}
         </Col>
-        <Col xs={24} md={6} >
+        <Col xs={24} md={6}>
           <a href="https://www.google.com" target="_blank" rel="noreferer noopener">Made By Marchisio</a>
         </Col>
       </Row>
-      
     </div>
-  )
+  );
 };
 
+// eslint-disable-next-line react/no-typos
 AppLayout.proptypes = {
   children: PropTypes.node.isRequired,
-}
+};
 
 export default AppLayout;

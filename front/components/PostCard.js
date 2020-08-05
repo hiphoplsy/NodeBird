@@ -25,22 +25,24 @@ const PostCard = ({ post }) => {
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
           <RetweetOutlined key="retweet" />,
-          liked 
+          liked
             ? <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
             : <HeartOutlined key="heart" onClick={onToggleLike} />,
           <MessageOutlined key="comment" onClick={onToggleComment} />,
-          <Popover key="more" content={(
-            <Button.Group>
-              {id && post.User.id === id 
-              ? (
-              <>
-              <Button>수정</Button>
-              <Button type="danger">삭제</Button>
-              </>
-              ) : 
-              <Button>신고</Button> }
-            </Button.Group>
-          )}>
+          <Popover
+            key="more"
+            content={(
+              <Button.Group>
+                {id && post.User.id === id
+                  ? (
+                    <>
+                      <Button>수정</Button>
+                      <Button type="danger">삭제</Button>
+                    </>
+                  ) : <Button>신고</Button> }
+              </Button.Group>
+            )}
+          >
             <EllipsisOutlined />
           </Popover>,
         ]}
@@ -73,7 +75,7 @@ const PostCard = ({ post }) => {
       {/* <CommentForm />
       <Comments /> */}
     </div>
-  )
+  );
 };
 
 PostCard.propTypes = {
@@ -85,6 +87,6 @@ PostCard.propTypes = {
     Comments: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
-}
+};
 
 export default PostCard;
