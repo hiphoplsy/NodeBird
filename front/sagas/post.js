@@ -28,9 +28,6 @@ function* loadPosts(action) {
     });
   }
 }
-function* watchLoadPosts() {
-  yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
-}
 
 function addPostAPI(data) {
   return axios.post('/api/post', data);
@@ -58,9 +55,6 @@ function* addPost(action) {
     });
   }
 }
-function* watchAddPost() {
-  yield takeLatest(ADD_POST_REQUEST, addPost);
-}
 
 function removePostAPI(data) {
   return axios.delete('/api/post', data);
@@ -85,9 +79,6 @@ function* removePost(action) {
     });
   }
 }
-function* watchRemovePost() {
-  yield takeLatest(REMOVE_POST_REQUEST, removePost);
-}
 
 function addCommentAPI(data) {
   return axios.post(`/api/post/${data.postId}/comment`, data);
@@ -107,6 +98,19 @@ function* addComment(action) {
     });
   }
 }
+
+function* watchLoadPosts() {
+  yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
+}
+
+function* watchAddPost() {
+  yield takeLatest(ADD_POST_REQUEST, addPost);
+}
+
+function* watchRemovePost() {
+  yield takeLatest(REMOVE_POST_REQUEST, removePost);
+}
+
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
