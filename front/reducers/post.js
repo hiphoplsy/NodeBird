@@ -1,41 +1,14 @@
 import shortId from 'shortid';
 import produce from 'immer';
+import faker from 'faker';
 
 export const initialState = {
-  mainPosts: [{
-    id: 1,
-    User: {
-      id: 1,
-      nickname: '맑쇼',
-    },
-    content: '첫번째 게시글 #해시태그 #익스프레스',
-    Images: [{
-      id: shortId.generate(),
-      src: 'https://1.bp.blogspot.com/-f6Vwn0m8ZQ4/Xx306Ir9G0I/AAAAAAAQDxY/ukuThlccT8cYTI0z5OVLgG2Yut_hm3w-wCLcBGAsYHQ/s1600/1.gif',
-    }, {
-      id: shortId.generate(),
-      src: 'https://1.bp.blogspot.com/-HuyvtWglI40/Xx306KuI1FI/AAAAAAAQDxg/IBKna7DGbTEtnDkuV8oXOLjGVHgACRHUQCLcBGAsYHQ/s1600/2.gif',
-    }, {
-      id: shortId.generate(),
-      src: 'https://2.bp.blogspot.com/-KXNtJILnG7o/XvRTXpMAyWI/AAAAAAAAHsI/OW2Wn__8aO0E6HqIiWTvX8vsMAif-_SJwCLcBGAsYHQ/s1600/ggoorr.net_001.gif',
-    }],
-    Comments: [{
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: 'nero',
-      },
-      content: '우와 개정판이 나왔음',
-    }, {
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: 'cat',
-      },
-      content: '우와 쩐다',
-    }],
-  }],
+  mainPosts: [],
   imagePaths: [],
+  hasMorePosts: true,
+  loadPostsLoading: false, // 포스트 로드 시도중
+  loadPostsDone: false,
+  loadPostsError: null,
   addPostLoading: false, // 포스트 추가 시도중
   addPostDone: false,
   addPostError: null,
@@ -46,6 +19,29 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
+
+export const generateDummyPost = (number) => Array(number).fill().map(() => ({
+  id: shortId.generate(),
+  User: {
+    id: shortId.generate(),
+    nickname: faker.name.findName(),
+  },
+  content: faker.lorem.paragraph(),
+  Images: [{
+    src: faker.image.image(),
+  }],
+  Comments: [{
+    User: {
+      id: shortId.generate(),
+      nickname: faker.name.findName(),
+    },
+    content: faker.lorem.sentence(),
+  }],
+}));
+
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -91,10 +87,25 @@ const dummyComment = (data) => ({
 // 이전 상태를 액션을 통해 다음 상태로 만들어내는 함수(불변성은 지키면서)
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
+    case LOAD_POSTS_REQUEST:
+      draft.loadPostsLoading = true;
+      draft.loadPostsDone = false;
+      draft.loadPostsError = null;
+      break;
+    case LOAD_POSTS_SUCCESS:
+      draft.loadPostsLoading = false;
+      draft.loadPostsDone = true;
+      draft.mainPosts = action.data.concat(draft.mainPosts);
+      draft.hasMorePosts = draft.mainPosts.length < 50;
+      break;
+    case LOAD_POSTS_FAILURE:
+      draft.loadPostsLoading = false;
+      draft.loadPostsError = action.error;
+      break;
     case ADD_POST_REQUEST:
-      draft.addPostLoading = true;
-      draft.addPostDone = false;
-      draft.addPostError = null;
+      draft.addPostsLoading = true;
+      draft.addPostsDone = false;
+      draft.addPostsError = null;
       break;
     case ADD_POST_SUCCESS:
       draft.addPostLoading = false;
