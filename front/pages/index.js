@@ -15,7 +15,7 @@ const Home = () => {
       type: LOAD_POSTS_REQUEST,
     });
   }, []);
-  
+    
   useEffect(() => {
     function onScroll() {
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {

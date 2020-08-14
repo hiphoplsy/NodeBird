@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import Head from 'next/head';
 import { Form, Input, Checkbox, Button } from 'antd';
 import styled from 'styled-components';
+import Router from 'next/router';
 
 import { useDispatch, useSelector } from 'react-redux';
 import AppLayout from '../components/AppLayout';
@@ -14,7 +15,20 @@ const ErrorMessage = styled.div`
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoading } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push('/');
+    }
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      // eslint-disable-next-line no-alert
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
@@ -34,6 +48,7 @@ const Signup = () => {
     setTermError(false);
   }, []);
 
+  // eslint-disable-next-line consistent-return
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
       return setPasswordError(true);

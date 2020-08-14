@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING(30),
       allowNull: false, // 필수
-      unique: true, // 고유한 값
     },
     nickname: {
       type: DataTypes.STRING(30),
@@ -18,12 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     collate: 'utf8_general_ci', // 한글 저장
 
   });
-  User.assosiate = (db) => {
+  User.associate = (db) => {
     db.User.hasMany(db.Post);
     db.User.hasMany(db.Comment);
-    db.User.belongToMany(db.Post, { through: 'Like', as: 'Liked' });
-    db.User.belongToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' })
-    db.User.belongToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' })
+    db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' });
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' })
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' })
   };
   return User;
 };
