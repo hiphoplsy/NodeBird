@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { Card, Avatar, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { Card, Avatar, Button } from 'antd';
 
 import { logoutRequestAction } from '../reducers/user';
 

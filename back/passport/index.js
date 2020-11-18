@@ -11,7 +11,7 @@ module.exports = () => {
     try {
       const user = await User.findOne({ where: { id }});
       done(null, user);
-    } catch (error){
+    } catch (error) {
       console.error(error);
       done(error);
     }

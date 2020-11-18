@@ -12,7 +12,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const FormWrapper = styled(Form)`
-  padding : 10px;
+  padding: 10px;
 `;
 
 const LoginForm = () => {
@@ -45,9 +45,9 @@ const LoginForm = () => {
         <br />
         <Input
           name="user-password"
+          type="password"
           value={password}
           onChange={onChangePassword}
-          type="password"
           required
         />
       </div>

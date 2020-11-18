@@ -46,8 +46,7 @@ const AppLayout = ({ children }) => {
   );
 };
 
-// eslint-disable-next-line react/no-typos
-AppLayout.proptypes = {
+AppLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
